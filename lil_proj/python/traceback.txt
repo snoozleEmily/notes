@@ -1,0 +1,14 @@
+Noun
+traceback (countable and uncountable, plural tracebacks)
+
+1. (chiefly computing) Determination of origin; the process of tracing something back to its source.
+2. (computing) A stack trace (in some programming languages)
+
+---
+
+* What Is a Python Traceback?
+A traceback is a report containing the function calls made in the code at a specific point. 
+Tracebacks can be called stack trace, stack traceback, backtrace, and others. In Python, the term used is traceback. 
+When the program results in an exception, Python will print the current traceback to help debugging.
+
+[See more](https://realpython.com/python-traceback)
