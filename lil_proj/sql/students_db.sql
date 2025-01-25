@@ -1864,12 +1864,160 @@ BEGIN
     RETURN student_count
 
 /*
---  Get Student Progress
+-- 1. Total Number of Students
+SELECT COUNT(*) AS total_students FROM students;
+*/
 
+/*
+-- 2. Total Number of Courses
+SELECT COUNT(*) AS total_courses FROM courses;
+*/
+
+/*
+-- 3. Total Number of Instructors
+SELECT COUNT(*) AS total_instructors FROM instructors;
+*/
+
+/*
+-- 4. Total Number of Enrollments
+SELECT COUNT(*) AS total_enrollments FROM enrollments;
+*/
+
+/*
+-- 5. List All Courses with Their Instructors
+SELECT 
+    c.course_name,
+    i.first_name || ' ' || i.last_name AS instructor_name
+FROM 
+    courses c
+LEFT JOIN 
+    instructors i ON c.instructor_id = i.instructor_id;
+*/
+
+/*
+-- 6. List All Students with Their Enrollment Count
 SELECT 
     s.student_id,
-    s.first_name || ' ' || s.last_name AS full_name,
+    s.first_name || ' ' || s.last_name AS student_name,
+    COUNT(e.course_id) AS enrollment_count
+FROM 
+    students s
+LEFT JOIN 
+    enrollments e ON s.student_id = e.student_id
+GROUP BY 
+    s.student_id, s.first_name, s.last_name;
+*/
+
+/*
+-- 7. List All Courses with Enrollment Count
+SELECT 
     c.course_name,
+    COUNT(e.student_id) AS enrollment_count
+FROM 
+    courses c
+LEFT JOIN 
+    enrollments e ON c.course_id = e.course_id
+GROUP BY 
+    c.course_name;
+*/
+
+/*
+-- 8. List All Assessments for a Specific Course
+SELECT 
+    a.assessment_id,
+    a.score,
+    s.first_name || ' ' || s.last_name AS student_name
+FROM 
+    assessments a
+JOIN 
+    students s ON a.student_id = s.student_id
+WHERE 
+    a.course_id = 1;  -- Change the course_id as needed
+*/
+
+/*
+-- 9. Average Score for Each Student
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS student_name,
+    AVG(a.score) AS average_score
+FROM 
+    students s
+LEFT JOIN 
+    assessments a ON s.student_id = a.student_id
+GROUP BY 
+    s.student_id, s.first_name, s.last_name;
+*/
+
+/*
+-- 10. Highest Score in Each Course
+SELECT 
+    c.course_name,
+    MAX(a.score) AS highest_score
+FROM 
+    courses c
+LEFT JOIN 
+    assessments a ON c.course_id = a.course_id
+GROUP BY 
+    c.course_name;
+*/
+
+/*
+-- 11. Lowest Score in Each Course
+SELECT 
+    c.course_name,
+    MIN(a.score) AS lowest_score
+FROM 
+    courses c
+LEFT JOIN 
+    assessments a ON c.course_id = a.course_id
+GROUP BY 
+    c.course_name;
+*/
+
+/*
+-- 12. List All Students Not Enrolled in Any Course
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS student_name
+FROM 
+    students s
+LEFT JOIN 
+    enrollments e ON s.student_id = e.student_id
+WHERE 
+    e.course_id IS NULL;
+*/
+
+/*
+-- 13. List All Courses with No Enrollments
+SELECT 
+    c.course_name
+FROM 
+    courses c
+LEFT JOIN 
+    enrollments e ON c.course_id = e.course_id
+WHERE 
+    e.student_id IS NULL;
+*/
+
+/*
+-- 14. List All Instructors with No Assigned Courses
+SELECT 
+    i.instructor_id,
+    i.first_name || ' ' || i.last_name AS instructor_name
+FROM 
+    instructors i
+LEFT JOIN 
+    courses c ON i.instructor_id = c.instructor_id
+WHERE 
+    c.course_id IS NULL;
+*/
+
+/*
+-- 15. List All Students with Their Grades
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS student_name,
     COALESCE(a.score, 'Not Assessed') AS score,
     CASE
         WHEN a.score IS NOT NULL THEN 
@@ -1889,6 +2037,198 @@ LEFT JOIN
 LEFT JOIN 
     courses c ON e.course_id = c.course_id
 LEFT JOIN 
+    assessments a ON s.student_id = a.student_id AND c.course_id = a.course_id;
+*/
+
+/*
+-- 16. List All Courses and Their Start Dates
+SELECT 
+    c.course_name,
+    c.start_date
+FROM 
+    courses c
+ORDER BY 
+    c.start_date;
+*/
+
+/*
+-- 17. List All Students with Their Phone Numbers
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS student_name,
+    s.phone
+FROM 
+    students s;
+*/
+
+/*
+-- 18. List All Instructors and Their Hire Dates
+SELECT 
+    i.instructor_id,
+    i.first_name || ' ' || i.last_name AS instructor_name,
+    i.hire_date
+FROM 
+    instructors i;
+*/
+
+/*
+-- 19. List All Courses with Their Maximum Capacity
+SELECT 
+    c.course_name,
+    c.max_students
+FROM 
+    courses c;
+*/
+
+/*
+-- 20. List All Assessments with Corresponding Course Names
+SELECT 
+    a.assessment_id,
+    a.score,
+    c.course_name
+FROM 
+    assessments a
+JOIN 
+    courses c ON a.course_id = c.course_id;
+*/
+
+/*
+-- 21. List All Students and Their Enrollment Dates
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS student_name,
+    e.enrollment_date
+FROM 
+    students s
+JOIN 
+    enrollments e ON s.student_id = e.student_id;
+*/
+
+/*
+-- 22. List All Courses with Their End Dates
+SELECT 
+    c.course_name,
+    c.end_date
+FROM 
+    courses c;
+*/
+
+/*
+-- 23. List All Students with Their Date of Birth
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS student_name,
+    s.date_of_birth
+FROM 
+    students s;
+*/
+
+/*
+-- 24. List All Instructors and Their Email Addresses
+SELECT 
+    i.instructor_id,
+    i.first_name || ' ' || i.last_name AS instructor_name,
+    i.email
+FROM 
+    instructors i;
+*/
+
+/*
+-- 25. List All Courses with Their Descriptions
+SELECT 
+    c.course_name,
+    c.description
+FROM 
+    courses c;
+*/
+
+/*
+-- 26. List All Students with Their Registration Dates
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS student_name,
+    s.registration_date
+FROM 
+    students s;
+*/
+
+/*
+-- 27. List All Assessments with Their Dates
+SELECT 
+    a.assessment_id,
+    a.assessment_date,
+    a.score
+FROM 
+    assessments a;
+*/
+
+/*
+-- 28. List All Courses and Their Language Taught
+SELECT 
+    c.course_name,
+    c.language_taught
+FROM 
+    courses c;
+*/
+
+/*
+-- 29. List All Students with Their Average Scores
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS student_name,
+    AVG(a.score) AS average_score
+FROM 
+    students s
+LEFT JOIN 
+    assessments a ON s.student_id = a.student_id
+GROUP BY 
+    s.student_id, s.first_name, s.last_name;
+*/
+
+/*
+-- 30. List All Courses with Their Enrollment Status
+SELECT 
+    c.course_name,
+    COUNT(e.student_id) AS enrolled_students,
+    c.max_students,
+    CASE 
+        WHEN COUNT(e.student_id) >= c.max_students THEN 'Full'
+        ELSE 'Available'
+    END AS status
+FROM 
+    courses c
+LEFT JOIN 
+    enrollments e ON c.course_id = e.course_id
+GROUP BY 
+    c.course_name, c.max_students;
+*/
+
+/*
+--  31. Get Student Progress
+
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS full_name,
+    c.course_name,
+    COALESCE(a.score, 'Not Assessed') AS score,
+    CASE
+        WHEN a.score IS NOT NULL THEN 
+            CASE
+                WHEN a.score >= 90 THEN 'A'
+                WHEN a.score >= 80 THEN 'B'
+                WHEN a.score >= 70 THEN 'C'
+                WHEN a.score >= 60 THEN 'D' 
+                ELSE 'F'
+            END
+        ELSE 'N/A'
+    END AS grade
+FROM 
+    students s
+LEFT JOIN 
+    enrollments e ON s.student_id = e.student_id
+LEFT JOIN 
+    courses c ON e.course_id = c.course_id
+LEFT JOIN 
     assessments a ON s.student_id = a.student_id AND c.course_id = a.course_id
 ORDER BY 
     s.student_id, c.course_name;
@@ -1897,7 +2237,7 @@ ORDER BY
 
 
 /*
---  Enrollment Summary
+-- 32. Enrollment Summary
 
 SELECT 
     c.course_name,
@@ -1919,7 +2259,7 @@ ORDER BY
 
 
 /*
---  Average Score by Course
+-- 33. Average Score by Course
 
 SELECT 
     c.course_name,
@@ -1939,7 +2279,7 @@ ORDER BY
 
 
 /*
---  Student Performance Report
+-- 34. Student Performance Report
 
 SELECT 
     s.student_id,
@@ -1972,4 +2312,155 @@ LEFT JOIN
     instructors i ON c.instructor_id = i.instructor_id
 ORDER BY 
     s.student_id, c.course_name;
+*/
+
+/*
+-- 35. Instructor Course Load
+
+SELECT 
+    i.instructor_id,
+    i.first_name || ' ' || i.last_name AS instructor_name,
+    COUNT(c.course_id) AS course_count
+FROM 
+    instructors i
+LEFT JOIN 
+    courses c ON i.instructor_id = c.instructor_id
+GROUP BY 
+    i.instructor_id, i.first_name, i.last_name
+ORDER BY 
+    course_count DESC;
+*/
+
+/*
+-- 36. Student Enrollment Count
+
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS student_name,
+    COUNT(e.course_id) AS enrollment_count
+FROM 
+    students s
+LEFT JOIN 
+    enrollments e ON s.student_id = e.student_id
+GROUP BY 
+    s.student_id, s.first_name, s.last_name
+ORDER BY 
+    enrollment_count DESC;
+*/
+
+/*
+-- 37. List All Students with Their Latest Assessment Score
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS student_name,
+    MAX(a.score) AS latest_score
+FROM 
+    students s
+LEFT JOIN 
+    assessments a ON s.student_id = a.student_id
+GROUP BY 
+    s.student_id, s.first_name, s.last_name;
+*/
+
+/*
+-- 38. List All Courses with Their Start and End Dates
+SELECT 
+    c.course_name,
+    c.start_date,
+    c.end_date
+FROM 
+    courses c
+ORDER BY 
+    c.start_date;
+*/
+
+/*
+-- 39. List All Students Enrolled in a Specific Course
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS student_name
+FROM 
+    students s
+JOIN 
+    enrollments e ON s.student_id = e.student_id
+WHERE 
+    e.course_id = 1;  -- Change the course_id as needed
+*/
+
+/*
+-- 40. List All Instructors Teaching More Than One Course
+SELECT 
+    i.instructor_id,
+    i.first_name || ' ' || i.last_name AS instructor_name,
+    COUNT(c.course_id) AS course_count
+FROM 
+    instructors i
+JOIN 
+    courses c ON i.instructor_id = c.instructor_id
+GROUP BY 
+    i.instructor_id, i.first_name, i.last_name
+HAVING 
+    COUNT(c.course_id) > 1;
+*/
+
+/*
+-- 41. List All Courses with Their Average Scores
+SELECT 
+    c.course_name,
+    AVG(a.score) AS average_score
+FROM 
+    courses c
+LEFT JOIN 
+    assessments a ON c.course_id = a.course_id
+GROUP BY 
+    c.course_name;
+*/
+
+/*
+-- 42. List All Students with Their Enrollment Dates in a Specific Course
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS student_name,
+    e.enrollment_date
+FROM 
+    students s
+JOIN 
+    enrollments e ON s.student_id = e.student_id
+WHERE 
+    e.course_id = 1;  -- Change the course_id as needed
+*/
+
+/*
+-- 43. List All Courses with Their Instructors and Enrollment Status
+SELECT 
+    c.course_name,
+    i.first_name || ' ' || i.last_name AS instructor_name,
+    COUNT(e.student_id) AS enrolled_students,
+    c.max_students,
+    CASE 
+        WHEN COUNT(e.student_id) >= c.max_students THEN 'Full'
+        ELSE 'Available'
+    END AS status
+FROM 
+    courses c
+LEFT JOIN 
+    instructors i ON c.instructor_id = i.instructor_id
+LEFT JOIN 
+    enrollments e ON c.course_id = e.course_id
+GROUP BY 
+    c.course_name, i.first_name, i.last_name, c.max_students;
+*/
+
+/*
+-- 44. List All Students with Their Total Number of Assessments
+SELECT 
+    s.student_id,
+    s.first_name || ' ' || s.last_name AS student_name,
+    COUNT(a.assessment_id) AS total_assessments
+FROM 
+    students s
+LEFT JOIN 
+    assessments a ON s.student_id = a.student_id
+GROUP BY 
+    s.student_id, s.first_name, s.last_name;
 */
