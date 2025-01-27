@@ -80,3 +80,126 @@ INSERT INTO martial_arts (name, estimated_age, deadliness_rating, variations_fla
 ('Shorin Ryu', 70, 5, 1, 6, 5, 'Japan', 8, 'Medium', 'Kicks, Punches', 'Strength, Agility', 'Mental discipline', 'Point sparring', 7, 'Traditional Okinawan karate', 'Choshin Chibana', 'Shorin Ryu Federation', '3-5 years', 'It is just for self-defense.', 'Kata, Kumite', 'Gi, Belt', 5, 1, 'Cultural heritage of Okinawa', 70, 'It is only for sport.', 'Kata, Kumite', 'Point-based', 'Local tournaments, National championships'),
 ('Gatka', 500, 6, 1, 5, 5, 'India', 7, 'Medium', 'Sword fighting, Sticks', 'Agility, Coordination', 'Mental focus', 'Self-defense', 6, 'Traditional Sikh martial art', 'N/A', 'N/A', '3-5 years', 'It is just for show.', 'Dhal, Kirpan', 'No specific gear', 5, 1, 'Cultural heritage of Punjab', 500, 'It is only for performance.', 'Sparring, Drilling', 'Non-competitive', 'Community events, Cultural festivals'),
 ('Kalaripayattu', 3000, 8, 1, 7, 7, 'India', 8, 'Medium', 'Strikes, Weaponry', 'Strength, Flexibility', 'Mental discipline', 'Self-defense', 8, 'Ancient Indian martial art', 'N/A', 'N/A', '3-5 years', 'It is just for show.', 'Marmachikitsa, Varma', 'No specific gear', 6, 1, 'Cultural heritage of Kerala', 3000, 'It is only for performance.', 'Sparring, Drilling', 'Non-competitive', 'Community events, Cultural festivals');
+
+CREATE OR REPLACE PROCEDURE compare_martial_arts (
+    p_id1 IN NUMBER,
+    p_id2 IN NUMBER,
+    o_report OUT VARCHAR2
+) AS
+    v_name1 VARCHAR2(50);
+    v_name2 VARCHAR2(50);
+    v_report VARCHAR2(4000);
+BEGIN
+    -- Fetch the names of the martial arts
+    SELECT name INTO v_name1 FROM martial_arts WHERE id = p_id1;
+    SELECT name INTO v_name2 FROM martial_arts WHERE id = p_id2;
+
+    -- Start building the report
+    v_report := 'Comparison Report between ' || v_name1 || ' and ' || v_name2 || ':' || CHR(10) || CHR(10);
+
+    -- Compare various attributes
+    FOR rec IN (
+        SELECT 
+            'Estimated Age' AS attribute,
+            estimated_age AS value1,
+            (SELECT estimated_age FROM martial_arts WHERE id = p_id2) AS value2
+        FROM martial_arts
+        WHERE id = p_id1
+        UNION ALL
+        SELECT 
+            'Deadliness Rating' AS attribute,
+            deadliness_rating AS value1,
+            (SELECT deadliness_rating FROM martial_arts WHERE id = p_id2) AS value2
+        FROM martial_arts
+        WHERE id = p_id1
+        UNION ALL
+        SELECT 
+            'Difficulty Rating' AS attribute,
+            difficulty_rating AS value1,
+            (SELECT difficulty_rating FROM martial_arts WHERE id = p_id2) AS value2
+        FROM martial_arts
+        WHERE id = p_id1
+        UNION ALL
+        SELECT 
+            'Popularity Rating' AS attribute,
+            popularity_rating AS value1,
+            (SELECT popularity_rating FROM martial_arts WHERE id = p_id2) AS value2
+        FROM martial_arts
+        WHERE id = p_id1
+        UNION ALL
+        SELECT 
+            'Self Defense Effectiveness' AS attribute,
+            self_defense_effectiveness AS value1,
+            (SELECT self_defense_effectiveness FROM martial_arts WHERE id = p_id2) AS value2
+        FROM martial_arts
+        WHERE id = p_id1
+    ) LOOP
+        v_report := v_report || rec.attribute || ': ' || rec.value1 || ' vs ' || rec.value2 || CHR(10);
+    END LOOP;
+
+    -- Output the report
+    o_report := v_report;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        o_report := 'One or both martial arts not found.';
+    WHEN OTHERS THEN
+        o_report := 'An error occurred: ' || SQLERRM;
+END compare_martial_arts;
+/
+
+CREATE OR REPLACE PROCEDURE find_most_or_least_martial_art (
+    p_attribute IN VARCHAR2,
+    p_type IN VARCHAR2, -- 'most' or 'least'
+    o_result OUT VARCHAR2
+) AS
+    v_name VARCHAR2(50);
+    v_value NUMBER;
+BEGIN
+    -- Validate the type parameter
+    IF p_type NOT IN ('most', 'least') THEN
+        o_result := 'Invalid type specified. Please use "most" or "least".';
+        RETURN;
+    END IF;
+
+    -- Validate the attribute parameter
+    IF p_attribute IN ('deadliness_rating', 'estimated_age', 'difficulty_rating', 'popularity_rating', 'self_defense_effectiveness', 'injury_risk') THEN
+        -- Determine the order based on the type
+        IF p_type = 'most' THEN
+            EXECUTE IMMEDIATE 'SELECT name, ' || p_attribute || ' FROM martial_arts ORDER BY ' || p_attribute || ' DESC FETCH FIRST 1 ROW ONLY' INTO v_name, v_value;
+            o_result := 'The most ' || REPLACE(p_attribute, '_', ' ') || ' martial art is ' || v_name || ' with a value of ' || v_value || '.';
+        ELSE
+            EXECUTE IMMEDIATE 'SELECT name, ' || p_attribute || ' FROM martial_arts ORDER BY ' || p_attribute || ' ASC FETCH FIRST 1 ROW ONLY' INTO v_name, v_value;
+            o_result := 'The least ' || REPLACE(p_attribute, '_', ' ') || ' martial art is ' || v_name || ' with a value of ' || v_value || '.';
+        END IF;
+    ELSE
+        o_result := 'Invalid attribute specified. Please use one of the following: deadliness_rating, estimated_age, difficulty_rating, popularity_rating, self_defense_effectiveness, injury_risk.';
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        o_result := 'No martial arts found.';
+    WHEN OTHERS THEN
+        o_result := 'An error occurred: ' || SQLsERRM;
+END find_most_or_least_martial_art;
+/
+
+CREATE OR REPLACE FUNCTION calculate_average_rating (
+    p_attribute IN VARCHAR2
+) RETURN NUMBER IS
+    v_average NUMBER;
+BEGIN
+    -- Validate the attribute parameter
+    IF p_attribute IN ('deadliness_rating', 'difficulty_rating', 'popularity_rating', 'self_defense_effectiveness', 'injury_risk') THEN
+        -- Calculate the average rating for the specified attribute
+        EXECUTE IMMEDIATE 'SELECT AVG(' || p_attribute || ') FROM martial_arts' INTO v_average;
+        
+        RETURN v_average;
+    ELSE
+        RAISE_APPLICATION_ERROR(-20001, 'Invalid attribute specified. Please use one of the following: deadliness_rating, difficulty_rating, popularity_rating, self_defense_effectiveness, injury_risk.');
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN NULL; -- No data found, return NULL
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'An error occurred: ' || SQLERRM);
+END calculate_average_rating;
+/
