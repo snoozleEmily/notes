@@ -273,11 +273,80 @@ BEGIN
     COMMIT;
 END;
 
-
 -- Call it like this
 --BEGIN
 --    calculate_chakra_relation(1, 2); -- Fire vs Water
 --END;
+
+
+
+CREATE OR REPLACE PROCEDURE battle (
+    player1_id IN NUMBER,
+    player2_id IN NUMBER
+) AS
+    player1_name VARCHAR2(100);
+    player2_name VARCHAR2(100);
+    player1_first_element_id NUMBER;
+    player2_first_element_id NUMBER;
+    relation_type1 VARCHAR2(10) := 'equal';
+    relation_type2 VARCHAR2(10) := 'equal';
+    winner VARCHAR2(100);
+    battle_narration VARCHAR2(1000);
+BEGIN
+    -- Fetch both players' data in a single query for better performance
+    SELECT p1.name, p1.first_element_id, p2.name, p2.first_element_id
+    INTO player1_name, player1_first_element_id, player2_name, player2_first_element_id
+    FROM player p1
+    JOIN player p2 ON p2.id = player2_id
+    WHERE p1.id = player1_id;
+
+    -- Fetch chakra relations in a single query
+    SELECT 
+        MAX(CASE WHEN cr.attacker_chakra_id = player1_first_element_id 
+                  AND cr.defender_chakra_id = player2_first_element_id 
+                 THEN cr.relation_type END),
+        MAX(CASE WHEN cr.attacker_chakra_id = player2_first_element_id 
+                  AND cr.defender_chakra_id = player1_first_element_id 
+                 THEN cr.relation_type END)
+    INTO relation_type1, relation_type2
+    FROM chakra_relations cr;
+    
+    -- Battle Narration possibilities
+    DECLARE 
+        hit_messages SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST(
+            'You lunge at your opponent, but they counter with a swift strike!',
+            'A powerful attack sends you staggering back!',
+            'Your enemy lands a solid hit, shaking your defenses!',
+            'You attempt to dodge, but your opponent’s attack finds its mark!',
+            'You barely block in time as your enemy presses forward!'
+        );
+        success_messages SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST(
+            'With incredible speed, you land a devastating strike!',
+            'Your opponent falters under your relentless assault!',
+            'You unleash a flurry of attacks, overwhelming your enemy!',
+            'A perfectly timed maneuver gives you the upper hand!',
+            'With a surge of energy, you break through their defenses!'
+        );
+    BEGIN
+        -- Determine winner based on chakra relation
+        IF relation_type1 = 'strong' AND relation_type2 = 'weak' THEN
+            winner := player1_name;
+            battle_narration := success_messages(DBMS_RANDOM.VALUE(1, success_messages.COUNT));
+        ELSIF relation_type1 = 'weak' AND relation_type2 = 'strong' THEN
+            winner := player2_name;
+            battle_narration := hit_messages(DBMS_RANDOM.VALUE(1, hit_messages.COUNT));
+        ELSE
+            winner := 'Draw or Equal';
+            battle_narration := 'Both warriors stand their ground, neither gaining the advantage!';
+        END IF;
+    END;
+
+    -- Output battle result
+    DBMS_OUTPUT.PUT_LINE('The battle begins! ' || player1_name || ' faces off against ' || player2_name || '...');
+    DBMS_OUTPUT.PUT_LINE(battle_narration);
+    DBMS_OUTPUT.PUT_LINE('Battle Result: ' || winner || ' wins!');
+    COMMIT;
+END;
 
 /
 
