@@ -246,6 +246,39 @@ BEGIN
   WHERE :NEW.yang_jutsu_id IS NOT NULL;
 END;
 
+CREATE OR REPLACE PROCEDURE calculate_chakra_relation (
+    player_element_id IN NUMBER,
+    enemy_element_id IN NUMBER
+) AS
+    relation_type VARCHAR2(10) := 'equal'; -- Default 
+BEGIN
+    -- Attempt to retrieve the relation type
+    BEGIN
+        SELECT relation_type INTO relation_type
+        FROM chakra_relations
+        WHERE attacker_chakra_id = player_element_id
+          AND defender_chakra_id = enemy_element_id;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            DBMS_OUTPUT.PUT_LINE('No specific relation found, inserting default relation.');
+            
+            -- Insert default relation if it doesn't exist
+            INSERT INTO chakra_relations (attacker_chakra_id, defender_chakra_id, relation_type)
+            VALUES (player_element_id, enemy_element_id, 'equal');
+    END;
+
+    -- Output the final relation type
+    DBMS_OUTPUT.PUT_LINE('Final Relation Type: ' || relation_type);
+    
+    COMMIT;
+END;
+
+
+-- Call it like this
+--BEGIN
+--    calculate_chakra_relation(1, 2); -- Fire vs Water
+--END;
+
 /
 
 
