@@ -358,6 +358,71 @@ SELECT * FROM ancient_weapons;
 SELECT * FROM voice_of_all_things;
 
 
+CREATE OR REPLACE PROCEDURE create_power_connections AS
+BEGIN
+    -- Clear existing connections to avoid duplicates
+    DELETE FROM power_connections;
+
+    -- Haki Connections
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Haoshoku Haki', 'Kenbunshoku Haki', 'Enhances perception and control, allowing the user to sense others.', 5);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Haoshoku Haki', 'Busoshoku Haki', 'Strengthens physical attacks, making them more impactful.', 4);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Kenbunshoku Haki', 'Busoshoku Haki', 'Allows for defensive maneuvers by sensing incoming attacks.', 3);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Advanced Kenbunshoku Haki', 'Kenbunshoku Haki', 'Improves future sight, allowing the user to anticipate movements.', 4);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Advanced Busoshoku Haki', 'Busoshoku Haki', 'Increases attack range and power, enabling long-distance strikes.', 4);
+
+    -- Devil Fruit Connections
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Paramecia', 'Logia', 'Logia fruits are often considered superior due to elemental control and intangibility.', 5);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Zoan', 'Paramecia', 'Zoan fruits provide physical enhancements and transformation abilities.', 3);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Mythical Zoan', 'Zoan', 'Mythical Zoan fruits provide unique abilities and legendary transformations.', 5);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Awakened Paramecia', 'Paramecia', 'Awakening enhances Paramecia abilities, allowing for greater influence over surroundings.', 4);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Awakened Zoan', 'Zoan', 'Awakening boosts physical capabilities and recovery rates.', 4);
+
+    -- Martial Arts Connections
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Iron Body Technique', 'Tekkai', 'Both enhance physical defense, making the user more resilient.', 4);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Storm Leg', 'Air Slash', 'Combines speed and cutting force for devastating attacks.', 3);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Thunder Palm', 'Shatter Fist', 'Combines shockwave and striking force for powerful impacts.', 4);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Water Stream Flow', 'Paper Art', 'Both emphasize fluid movement and evasion techniques.', 3);
+
+    -- Weather Control Connections
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Clima-Tact', 'Thunder Lance Tempo', 'Utilizes weather manipulation for powerful lightning strikes.', 4);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Cyclone Burst', 'Mirage Tempo', 'Creates illusions using weather effects to confuse opponents.', 3);
+
+    -- Rokushiki Connections
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Soru', 'Geppo', 'Combines speed with aerial movement for enhanced mobility.', 4);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Tekkai', 'Kami-e', 'Defense and evasion techniques that complement each other.', 3);
+
+    -- Cyborg Modifications Connections
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Cyborg Modifications', 'Laser Beams', 'Enhances combat capabilities with advanced weaponry.', 4);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Steel Plating', 'Cyborg Modifications', 'Increases defense through enhanced armor.', 4);
+
+    -- Giant Strength Connections
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Giant Strength', 'Natural Strength', 'Both enhance physical power due to size and mass.', 5);
+
+    -- Vinsmoke Germa Technology Connections
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Raid Suits', 'Electrified Combat Suits', 'Both enhance combat abilities with advanced technology.', 4);
+
+    -- Minks' Sulong Form Connections
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Minks'' Sulong Form', 'Enhanced Combat Abilities', 'Amplifies physical capabilities during full moon.', 5);
+
+    -- Seastone Connections
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Seastone', 'Cyborg Modifications', 'Nullifies Devil Fruit powers, making it effective against users.', 5);
+
+    -- Ancient Weapons Connections
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Pluton', 'Poseidon', 'Both are ancient weapons with unique powers and historical significance.', 5);
+    INSERT INTO power_connections (power_from, power_to, relationship, power_scale) VALUES ('Poseidon', 'Uranus', 'Ancient weapons with significant historical importance and potential.', 4);
+s
+    -- Logging the completion of the procedure
+    DBMS_OUTPUT.PUT_LINE('Power connections created successfully with power scales.');
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Handle exceptions and log errors
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error occurred while creating power connections: ' || SQLERRM);
+END create_power_connections;
+
+
 CREATE TABLE characters (
     id NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
     devil_fruit_power VARCHAR2(50),
@@ -611,3 +676,234 @@ BEGIN
 
     CLOSE character_info;
 END create_character_instance;
+
+CREATE OR REPLACE FUNCTION get_character_details (
+    p_character_id IN NUMBER
+) RETURN SYS_REFCURSOR AS
+    character_info SYS_REFCURSOR;
+BEGIN
+    OPEN character_info FOR
+    SELECT 
+        devil_fruit_power,
+        devil_fruit_subpower,
+        devil_fruit_description,
+        haki_power,
+        haki_subpower,
+        haki_description,
+        martial_arts_power,
+        martial_arts_subpower,
+        martial_arts_description,
+        weather_control_power,
+        weather_control_subpower,
+        weather_control_description,
+        rokushiki_power,
+        rokushiki_subpower,
+        rokushiki_description,
+        cyborg_modification_power,
+        cyborg_modification_description,
+        giant_strength_power,
+        giant_strength_description,
+        vinsmoke_germa_power,
+        vinsmoke_germa_description,
+        minks_sulong_power,
+        minks_sulong_description,
+        seastone_power,
+        seastone_description,
+        ancient_weapon_power,
+        ancient_weapon_description,
+        voice_of_all_things_power,
+        voice_of_all_things_description
+    FROM characters
+    WHERE id = p_character_id;
+
+    RETURN character_info;
+END get_character_details;
+
+
+CREATE OR REPLACE PROCEDURE list_all_characters AS
+BEGIN
+    FOR rec IN (
+        SELECT 
+            id,
+            devil_fruit_power,
+            haki_power,
+            martial_arts_power,
+            weather_control_power,
+            rokushiki_power,
+            cyborg_modification_power,
+            giant_strength_power,
+            vinsmoke_germa_power,
+            minks_sulong_power,
+            seastone_power,
+            ancient_weapon_power,
+            voice_of_all_things_power
+        FROM characters
+    ) LOOP
+        DBMS_OUTPUT.PUT_LINE('Character ID: ' || rec.id || 
+                             ', Devil Fruit: ' || rec.devil_fruit_power || 
+                             ', Haki: ' || rec.haki_power || 
+                             ', Martial Arts: ' || rec.martial_arts_power || 
+                             ', Weather Control: ' || rec.weather_control_power || 
+                             ', Rokushiki: ' || rec.rokushiki_power || 
+                             ', Cyborg Modification: ' || rec.cyborg_modification_power || 
+                             ', Giant Strength: ' || rec.giant_strength_power || 
+                             ', Vinsmoke Germa: ' || rec.vinsmoke_germa_power || 
+                             ', Minks Sulong: ' || rec.minks_sulong_power || 
+                             ', Seastone: ' || rec.seastone_power || 
+                             ', Ancient Weapon: ' || rec.ancient_weapon_power || 
+                             ', Voice of All Things: ' || rec.voice_of_all_things_power);
+    END LOOP;
+END list_all_characters;
+
+CREATE OR REPLACE PROCEDURE list_all_available_powers AS
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Devil Fruits:');
+    FOR rec IN (SELECT DISTINCT power FROM devil_fruits) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Haki:');
+    FOR rec IN (SELECT DISTINCT power FROM haki) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Martial Arts:');
+    FOR rec IN (SELECT DISTINCT power FROM martial_arts) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Weather Control:');
+    FOR rec IN (SELECT DISTINCT power FROM weather_control) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Rokushiki:');
+    FOR rec IN (SELECT DISTINCT power FROM rokushiki) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Cyborg Modifications:');
+    FOR rec IN (SELECT DISTINCT power FROM cyborg_modifications) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Giant Strength:');
+    FOR rec IN (SELECT DISTINCT power FROM giant_strength) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Vinsmoke Germa Technology:');
+    FOR rec IN (SELECT DISTINCT power FROM vinsmoke_germa) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Minks Sulong Form:');
+    FOR rec IN (SELECT DISTINCT power FROM minks_sulong) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Seastone:');
+    FOR rec IN (SELECT DISTINCT power FROM seastone) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Ancient Weapons:');
+    FOR rec IN (SELECT DISTINCT power FROM ancient_weapons) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Voice of All Things:');
+    FOR rec IN (SELECT DISTINCT power FROM voice_of_all_things) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+END list_all_available_powers;
+
+CREATE OR REPLACE PROCEDURE list_all_available_powers AS
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Devil Fruits:');
+    FOR rec IN (SELECT DISTINCT power FROM devil_fruits) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Haki:');
+    FOR rec IN (SELECT DISTINCT power FROM haki) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Martial Arts:');
+    FOR rec IN (SELECT DISTINCT power FROM martial_arts) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Weather Control:');
+    FOR rec IN (SELECT DISTINCT power FROM weather_control) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Rokushiki:');
+    FOR rec IN (SELECT DISTINCT power FROM rokushiki) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Cyborg Modifications:');
+    FOR rec IN (SELECT DISTINCT power FROM cyborg_modifications) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Giant Strength:');
+    FOR rec IN (SELECT DISTINCT power FROM giant_strength) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Vinsmoke Germa Technology:');
+    FOR rec IN (SELECT DISTINCT power FROM vinsmoke_germa) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Minks Sulong Form:');
+    FOR rec IN (SELECT DISTINCT power FROM minks_sulong) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Seastone:');
+    FOR rec IN (SELECT DISTINCT power FROM seastone) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Ancient Weapons:');
+    FOR rec IN (SELECT DISTINCT power FROM ancient_weapons) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Voice of All Things:');
+    FOR rec IN (SELECT DISTINCT power FROM voice_of_all_things) LOOP
+        DBMS_OUTPUT.PUT_LINE('- ' || rec.power);
+    END LOOP;
+END list_all_available_powers;
+
+
+CREATE OR REPLACE FUNCTION get_character_history (
+    p_character_id IN NUMBER
+) RETURN VARCHAR2 AS
+    character_history VARCHAR2(4000);
+BEGIN
+    -- Assuming there is a history column in the characters table
+    SELECT history INTO character_history FROM characters WHERE id = p_character_id;
+
+    RETURN character_history;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN 'No history found for this character.';
+END get_character_history;
+
+CREATE OR REPLACE PROCEDURE track_character_progression (
+    p_character_id IN NUMBER,
+    p_progress_update IN VARCHAR2
+) AS
+BEGIN
+    -- Assuming there is a progression log table
+    INSERT INTO character_progression_log (character_id, progress_update, update_date)
+    VALUES (p_character_id, p_progress_update, SYSDATE);
+    
+    COMMIT;
+END track_character_progression;
