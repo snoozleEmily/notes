@@ -915,5 +915,6 @@ BEGIN
     COMMIT;
 END track_character_progression;
 
-create a progression log table and a  characters table. Also remove stupid comments
-gimme the code from get_character_history below
+
+
+-- Ops 🤣
