@@ -203,3 +203,33 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20002, 'An error occurred: ' || SQLERRM);
 END calculate_average_rating;
 /
+
+
+CREATE OR REPLACE PROCEDURE list_martial_arts_by_training_intensity (
+    p_intensity IN VARCHAR2,
+    o_result OUT VARCHAR2
+) AS
+    v_report VARCHAR2(4000);
+BEGIN
+    -- Validate the intensity parameter
+    IF p_intensity IN ('High', 'Medium', 'Low') THEN
+        v_report := 'Martial Arts with ' || p_intensity || ' training intensity:' || CHR(10);
+        
+        FOR rec IN (
+            SELECT name FROM martial_arts
+            WHERE training_intensity = p_intensity
+        ) LOOP
+            v_report := v_report || rec.name || CHR(10);
+        END LOOP;
+
+        o_result := v_report;
+    ELSE
+        o_result := 'Invalid training intensity specified. Please use "High", "Medium", or "Low".';
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        o_result := 'No martial arts found with the specified training intensity.';
+    WHEN OTHERS THEN
+        o_result := 'An error occurred: ' || SQLERRM;
+END list_martial_arts_by_training_intensity;
+/
