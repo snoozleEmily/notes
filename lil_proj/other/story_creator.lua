@@ -1,3 +1,6 @@
+-- To play this game, copy the code below and paste on:
+-- https://www.tutorialspoint.com/execute_lua_online.php
+
 function input(prompt)
     io.write(prompt .. ": ")
     return io.read()
