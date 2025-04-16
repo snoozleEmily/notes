@@ -1,3 +1,4 @@
+-- PLSQL
 CREATE OR REPLACE PROCEDURE guess_cat_lives IS
     -- Declare variables
     cat_lives INTEGER := 9;  -- The cat starts with 9 lives.

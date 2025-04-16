@@ -1,3 +1,4 @@
+-- PLSQL
 CREATE ANALYST_DATA (
     analyst_id INT PRIMARY KEY,
     analyst_name VARCHAR(50),

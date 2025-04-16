@@ -1,3 +1,4 @@
+-- PLSQL
 CREATE TABLE chakra_natures (
   id NUMBER PRIMARY KEY,
   element VARCHAR2(100) NOT NULL,

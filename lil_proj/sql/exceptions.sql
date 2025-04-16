@@ -1,3 +1,4 @@
+-- PLSQL
 DECLARE
     -- Variables
     num1         NUMBER := 10;
