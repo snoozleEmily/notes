@@ -1,3 +1,7 @@
+# .gitignore for study purpuses
+# It has many comments and dummy additions, please ignore - pun intended
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
