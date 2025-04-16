@@ -1,3 +1,7 @@
+// A tiny "database" built with React App Expo - since it was discontinued, 
+// it is a mere sweet memory now, so everything was condensed
+// into one big ol' file full of nostalgia.
+
 import React, { FC, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import auth from '@react-native-firebase/auth';
