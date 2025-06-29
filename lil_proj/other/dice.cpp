@@ -2,6 +2,7 @@
 #include <cstdlib>  // for rand() and srand()
 #include <ctime>    // for time()
 
+
 int rollDice() {
     return rand() % 6 + 1; // Generates a number between 1 and 6
 }
