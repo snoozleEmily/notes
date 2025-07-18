@@ -1,5 +1,3 @@
-# List Of My Favorite Books
-
 This repository is for my personal notes on my favorite books, sharing useful resources, and a few dummy scripts
 
 ## Awesome Free Resources I Like
