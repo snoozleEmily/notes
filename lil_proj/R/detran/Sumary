@@ -77,3 +77,18 @@ Group variables            None
 7 ▇▁▁▁▁
 8 ▇▁▁▁▁
 9 ▇▁▁▁▁
+
+
+
+
+skim_variable: nome da variável numérica no dataset.
+n_missing: número de valores ausentes (faltantes) nessa variável. Aqui, todas têm 0, ou seja, sem dados faltantes.
+complete_rate: proporção de dados completos (não faltantes). Todas são 1, ou 100% completas.
+mean: média dos valores da variável.
+sd: desvio padrão, que mostra a variabilidade dos dados em torno da média.
+p0: valor mínimo observado (percentil 0).
+p25: valor do primeiro quartil (25% dos dados estão abaixo desse valor).
+p50: mediana ou segundo quartil (50% dos dados abaixo desse valor).
+p75: terceiro quartil (75% dos dados abaixo desse valor).
+p100: valor máximo observado (percentil 100).
+hist: um pequeno gráfico de barras que representa a distribuição dos dados visualmente.
