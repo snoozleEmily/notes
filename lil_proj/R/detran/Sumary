@@ -1,0 +1,79 @@
+── Data Summary ────────────────────────
+                           Values
+Name                       dataset
+Number of rows             60365
+Number of columns          30
+_______________________
+Column type frequency:
+  character                21     
+  numeric                  9
+________________________
+Group variables            None
+
+── Variable type: character ────────────────────────────────────────────────────
+   skim_variable          n_missing complete_rate min max empty n_unique
+ 1 id                             0         1       6   8     0    60365
+ 2 data_inversa                   0         1      10  10     0      305
+ 3 dia_semana                     0         1       6  13     0        7
+ 4 horario                        0         1       8   8     0     1400
+ 5 uf                             0         1       2   2     0       27
+ 6 km                             0         1       1   6     0     7341
+ 7 municipio                      0         1       3  32     0     1809
+ 8 causa_acidente                 0         1       5  76     0       69
+ 9 tipo_acidente                  0         1       8  30     0       17
+10 classificacao_acidente         1         1.000  11  19     0        3
+11 fase_dia                       0         1       9  11     0        4
+12 sentido_via                    0         1       9  13     0        3
+13 condicao_metereologica         0         1       3  16     0       10
+14 tipo_pista                     0         1       5   8     0        3
+15 tracado_via                    0         1       4  85     0      592
+16 uso_solo                       0         1       3   3     0        2
+17 latitude                       0         1       2  12     0    32558
+18 longitude                      0         1       3  12     0    32535
+19 regional                       0         1       3   7     0       29
+20 delegacia                      0         1       3   8     0      153
+21 uop                            0         1       3  15     0      395
+   whitespace
+ 1          0
+ 2          0
+ 3          0
+ 4          0
+ 5          0
+ 6          0
+ 7          0
+ 8          0
+ 9          0
+10          0
+11          0
+12          0
+13          0
+14          0
+15          0
+16          0
+17          0
+18          0
+19          0
+20          0
+21          0
+
+── Variable type: numeric ──────────────────────────────────────────────────────
+  skim_variable  n_missing complete_rate     mean      sd p0 p25 p50 p75 p100
+1 br                     0             1 209.     129.     0 101 158 319  495
+2 pessoas                0             1   2.59     2.15   1   2   2   3   61
+3 mortos                 0             1   0.0831   0.344  0   0   0   0   23
+4 feridos_leves          0             1   0.873    1.09   0   0   1   1   43
+5 feridos_graves         0             1   0.278    0.629  0   0   0   0   30
+6 ilesos                 0             1   1.04     1.69   0   0   1   1   60
+7 ignorados              0             1   0.402    0.831  0   0   0   1   33
+8 feridos                0             1   1.15     1.20   0   1   1   1   45
+9 veiculos               0             1   2.00     1.09   1   1   2   2   26
+  hist
+1 ▂▇▃▃▂
+2 ▇▁▁▁▁
+3 ▇▁▁▁▁
+4 ▇▁▁▁▁
+5 ▇▁▁▁▁
+6 ▇▁▁▁▁
+7 ▇▁▁▁▁
+8 ▇▁▁▁▁
+9 ▇▁▁▁▁
