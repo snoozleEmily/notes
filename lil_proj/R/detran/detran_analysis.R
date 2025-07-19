@@ -12,7 +12,7 @@ dataset <- read.csv(
   sep = ";",
   fileEncoding = "Windows-1252"
 )
-# View(dataset)
+View(dataset)
 
 # Overview
 # print(str(dataset))
@@ -22,3 +22,12 @@ print(skim(dataset))
 source("D:/Projects/random projects/notes/notes/lil_proj/R/detran/distinct.R")
 distincts <- cols(dataset)
 # View(distincts$cause)  # cause, type, condition
+
+
+# Ammount of accidents by state
+
+# Probability of climate influence
+
+# How the day time affects accidents
+
+# What insights there are about types of prominent accidents and their causes
