@@ -1,11 +1,6 @@
-cols <- function(set) {
+distinct_col <- function(var, set, col) {
   list(
-    cause = set %>% distinct(causa_acidente),
-    type = set %>% distinct(tipo_acidente),
-    condition = set %>% distinct(condicao_metereologica)
+    var = set %>% distinct(col)
   )
-}
-
-distinct_col <- function(set, col) {
   set %>% distinct(across(all_of(col)))
 }
