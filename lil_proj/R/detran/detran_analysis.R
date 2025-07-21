@@ -22,14 +22,13 @@ source(file.path(path, "pizza_graph.R"))
 source(file.path(path, "bar_graph.R"))
 
 # Ammount of accidents by state
-result_state <- plot_state_bar(dataset, uf,
+result_state <- plot_bar(dataset, uf,
   title_text = "Quantidade de Acidentes por Estado (2024)"
 )
-View(result_state$data)
+# View(result_state$data)
 print(result_state$chart)
 
 # Probability of climate influence
-
 result_climate <- plot_pizza(dataset, condicao_metereologica,
   title_text = "Distribuição por Condição Meteorológica (2024)"
 )
@@ -45,7 +44,12 @@ result_day <- plot_pizza(dataset, fase_dia,
 # print(result_day$chart)
 
 # Most common types of accidents
-
+result_types <- plot_bar(dataset, causa_acidente,
+  title_text = "Distribuição por Causa do Acidente (2024)",
+  horizontal = TRUE
+)
+# View(result_types$data)
+print(result_types$chart)
 
 
 
