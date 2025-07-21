@@ -1,7 +1,7 @@
-get_summarise <- function(by_col, col, acc = n()) {
+get_summarise <- function(by_col, col) {
   by_col %>%
-    group_by({{ col }}) %>%
-    summarise({{ acc }}, .groups = "drop") %>%
-    arrange(desc({{ acc }})) %>%
+    dplyr::group_by({{ col }}) %>%
+    dplyr::summarise(acc = dplyr::n(), .groups = "drop") %>%
+    dplyr::arrange(desc(acc)) %>%
     as.data.frame()
 }
