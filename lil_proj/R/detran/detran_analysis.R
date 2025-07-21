@@ -22,27 +22,17 @@ source(file.path(path, "distinct.R"))
 source(file.path(path, "get_summarise.R"))
 
 # Ammount of accidents by state
-by_state <- get_summarise(dataset, uf)
-# View(by_state) # 1. MG
-aes_state <- aes(x = reorder(uf, -acc), y = acc, fill = acc)
-plot_state <- ggplot(by_state, aes_state) +
-  geom_bar(stat = "identity") +
-  scale_fill_gradient(low = "paleturquoise", high = "midnightblue") +
-  labs(
-    title = "Quantidade de Acidentes por Estado (2024)",
-    x = "Estado (UF)",
-    y = "Número de Acidentes",
-    fill = "Número de Acidentes"
-  ) +
-  theme_minimal(base_size = 14)
+source(file.path(path, "state_graph.R"))
+result_state <- plot_state_bar(dataset)
+View(result_state$data) # 1. MG
+print(result_state$chart)
 
-# print(plot_state)
 
 # Probability of climate influence
 source(file.path(path, "climate_graph.R"))
-result <- plot_climate_pie(dataset)
-View(result$data)  # 1. Céu Claro
-print(result$chart)
+result_climate <- plot_climate_pie(dataset)
+# View(result_climate$data)  # 1. Céu Claro
+# print(result_climate$chart)
 
 
 # How the day time affects accidents
