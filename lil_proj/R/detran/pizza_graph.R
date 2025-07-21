@@ -1,6 +1,5 @@
 plot_pizza <- function(dataset, field,
                        title_text = "Distribuição de Acidentes") {
-  # Agrupar e contar por campo
   by_field <- dataset %>%
     group_by({{ field }}) %>%
     summarise(quantidade = n(), .groups = "drop") %>%
@@ -15,16 +14,15 @@ plot_pizza <- function(dataset, field,
         categoria, " (", formatC(percent, format = "f", digits = 4), "%)"
       )
     )
-  # Ordenar legenda
+
   by_field$categoria_label <- factor(by_field$categoria_label,
     levels = by_field$categoria_label
   )
 
-  pie_chart <- ggplot(by_field, aes(
-    x = "",
-    y = quantidade,
-    fill = categoria_label
-  )) +
+  pie_chart <- ggplot(
+    by_field,
+    aes(x = "", y = quantidade, fill = categoria_label)
+  ) +
     geom_col(width = 1, color = "white") +
     coord_polar(theta = "y") +
     labs(
