@@ -2,4 +2,5 @@
 # install.packages("rlang", repos = "https://cloud.r-project.org")
 # install.packages("languageserver")
 # install.packages("dplyr")
-install.packages("skimr")
+# install.packages("skimr")
+install.packages("ggplot2")
