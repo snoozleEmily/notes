@@ -9,7 +9,6 @@ plot_bar <- function(dataset, field,
 
   colnames(by_field)[1] <- "categoria"
 
-  # ✅ If horizontal and too many categories → keep top 19 + "Outros"
   if (horizontal && nrow(by_field) > 32) {
     top_cats <- by_field[1:32, ]
     remaining_sum <- sum(by_field$acc[33:nrow(by_field)])
