@@ -2,7 +2,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class StatsCalculator {
-
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.println("Enter numbers separated by spaces:");
