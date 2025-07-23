@@ -1,7 +1,7 @@
 plot_bar <- function(dataset, field,
                      title_text = "Distribuição de Acidentes",
                      horizontal = FALSE,
-                     max_char = 25) {  
+                     max_char = 30) {
   
   by_field <- dataset %>%
     group_by({{ field }}) %>%
@@ -13,10 +13,8 @@ plot_bar <- function(dataset, field,
   chart_list <- list()
   data_list <- list()
   
-  wrap_labels <- function(x) {
-    ifelse(nchar(x) > max_char,
-           stringr::str_wrap(x, width = max_char),
-           x)
+  trunc_labels <- function(x) {
+    ifelse(nchar(x) > max_char, paste0(substr(x, 1, max_char), "..."), x)
   }
   
   if (horizontal && nrow(by_field) > 32) {
@@ -36,7 +34,7 @@ plot_bar <- function(dataset, field,
           fill = "Número de Acidentes"
         ) +
         scale_fill_gradient(low = "midnightblue", high = "firebrick") +
-        scale_y_discrete(labels = wrap_labels) + 
+        scale_y_discrete(labels = trunc_labels) + 
         theme_minimal(base_size = 14) +
         theme(axis.text.y = element_text(size = 10))  
     }
@@ -53,7 +51,7 @@ plot_bar <- function(dataset, field,
       by_field$categoria <- factor(by_field$categoria, levels = rev(by_field$categoria))
       chart <- ggplot(by_field, aes(x = acc, y = categoria, fill = acc)) +
         geom_bar(stat = "identity") +
-        scale_y_discrete(labels = wrap_labels)  
+        scale_y_discrete(labels = trunc_labels)  
     } else {
       by_field$categoria <- factor(by_field$categoria, levels = by_field$categoria)
       chart <- ggplot(by_field, aes(x = categoria, y = acc, fill = acc)) +
