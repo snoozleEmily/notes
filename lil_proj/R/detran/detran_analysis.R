@@ -1,6 +1,7 @@
 library(skimr)
 library(dplyr)
 library(ggplot2)
+library(gridExtra)
 
 path <- "D:/Projects/random projects/notes/notes/lil_proj/R/detran"
 setwd(file.path(path))
@@ -26,7 +27,7 @@ result_state <- plot_bar(dataset, uf,
   title_text = "Quantidade de Acidentes por Estado (2024)"
 )
 # View(result_state$data)
-print(result_state$chart)
+# print(result_state$chart)
 
 # Probability of climate influence
 result_climate <- plot_pizza(dataset, condicao_metereologica,
@@ -49,8 +50,6 @@ result_types <- plot_bar(dataset, causa_acidente,
   horizontal = TRUE
 )
 # View(result_types$data)
-print(result_types$chart)
-
-
+grid.arrange(grobs = result_types$charts, ncol = 1)
 
 # What insights there are about types of prominent accidents and their causes
