@@ -4,4 +4,5 @@
 # install.packages("dplyr")
 # install.packages("skimr")
 # install.packages("ggplot2")
-install.packages("gridExtra")
+# install.packages("gridExtra")
+install.packages("stringr")
