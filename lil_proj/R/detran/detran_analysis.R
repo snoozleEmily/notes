@@ -12,9 +12,9 @@ dataset <- read.csv(
 )
 
 # Overview
-# View(dataset)
-# print(str(dataset))
-# print(skim(dataset))
+View(dataset)
+print(str(dataset))
+print(skim(dataset))
 
 # Distinct values
 source(file.path(path, "distinct.R"))
@@ -26,30 +26,34 @@ source(file.path(path, "bar_graph.R"))
 result_state <- plot_bar(dataset, uf,
   title_text = "Quantidade de Acidentes por Estado (2024)"
 )
-# View(result_state$data)
-# print(result_state$chart)
+View(result_state$data)
+print(result_state$chart)
 
 # Probability of climate influence
 result_climate <- plot_pizza(dataset, condicao_metereologica,
   title_text = "Distribuição por Condição Meteorológica (2024)"
 )
-# View(result_climate$data)  # 1. Céu Claro
-# print(result_climate$chart)
+View(result_climate$data) 
+print(result_climate$chart)
 
 
 # How the day time affects accidents
 result_day <- plot_pizza(dataset, fase_dia,
   title_text = "Distribuição por Fase do Dia (2024)"
 )
-# View(result_day$data)
-# print(result_day$chart)
+View(result_day$data)
+print(result_day$chart)
 
 # Most common types of accidents
 result_types <- plot_bar(dataset, causa_acidente,
   title_text = "Distribuição por Causa do Acidente (2024)",
   horizontal = TRUE
 )
-# View(result_types$data)
+View(result_types$data)
 grid.arrange(grobs = result_types$charts, ncol = 1)
 
-# What insights there are about types of prominent accidents and their causes
+# Overview on BR accidents
+View(distinct_col(dataset, "br",
+  n_name = "quantidade_accidents",
+  perc_name = "porcentagem_acidentes"
+))

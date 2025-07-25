@@ -46,15 +46,22 @@ plot_bar <- function(dataset, field,
   } else {
     # Single chart case
     if (horizontal) {
-      by_field$categoria <- factor(by_field$categoria, levels = rev(by_field$categoria))
+      by_field$categoria <- factor(by_field$categoria,
+        levels = rev(by_field$categoria)
+      )
       chart <- ggplot(by_field, aes(x = acc, y = categoria, fill = acc)) +
         geom_bar(stat = "identity") +
         scale_y_discrete(labels = trunc_labels)
     } else {
-      by_field$categoria <- factor(by_field$categoria, levels = by_field$categoria)
+      by_field$categoria <- factor(by_field$categoria,
+        levels = by_field$categoria
+      )
       chart <- ggplot(by_field, aes(x = categoria, y = acc, fill = acc)) +
         geom_bar(stat = "identity") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1)) # Rotate for vertical
+        theme(axis.text.x = element_text(
+          angle = 45,
+          hjust = 1
+        ))
     }
 
     chart <- chart +

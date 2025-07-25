@@ -11,10 +11,11 @@ plot_pizza <- function(dataset, field,
     mutate(
       percent = quantidade / sum(quantidade) * 100,
       categoria_label = paste0(
-        categoria, " (", 
+        categoria, " (",
         ifelse(round(percent, 2) == 0,
-               formatC(percent, format = "f", digits = 4),
-               formatC(percent, format = "f", digits = 2)),
+          formatC(percent, format = "f", digits = 4),
+          formatC(percent, format = "f", digits = 2)
+        ),
         "%)"
       )
     )
