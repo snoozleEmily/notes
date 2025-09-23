@@ -1,0 +1,8 @@
+# install.packages("jsonlite", repos = "https://cloud.r-project.org")
+# install.packages("rlang", repos = "https://cloud.r-project.org")
+# install.packages("languageserver")
+# install.packages("dplyr")
+# install.packages("skimr")
+# install.packages("ggplot2")
+# install.packages("gridExtra")
+install.packages("stringr")
