@@ -12,8 +12,8 @@ dataset <- read.csv(
 )
 
 # Overview
-View(dataset)
-# print(str(dataset))
+# View(dataset)
+print(str(dataset))
 # print(skim(dataset))
 
 # Distinct values
@@ -33,7 +33,7 @@ result_state <- plot_bar(dataset, uf,
 result_climate <- plot_pizza(dataset, condicao_metereologica,
   title_text = "Distribuição por Condição Meteorológica (2024)"
 )
-# View(result_climate$data) 
+# View(result_climate$data)
 # print(result_climate$chart)
 
 
@@ -48,8 +48,8 @@ result_day <- plot_pizza(dataset, fase_dia,
 
 # Overview on BR accidents
 # View(distinct_col(dataset, "br",
-  # n_name = "quantidade_accidents",
-  # perc_name = "porcentagem_acidentes"
+# n_name = "quantidade_accidents",
+# perc_name = "porcentagem_acidentes"
 # ))
 
 # Most common types of accidents
@@ -61,4 +61,4 @@ result_types <- plot_bar(dataset, causa_acidente,
 grid.arrange(grobs = result_types$charts, ncol = 1)
 
 source(file.path(path, "descriptive.R"))
-descriptive_analysis(dataset)
+# descriptive_analysis(dataset)
