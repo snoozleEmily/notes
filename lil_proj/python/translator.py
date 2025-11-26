@@ -1,8 +1,24 @@
 import requests
 
-def translate(text, target='es', source='auto'):
-    r = requests.post('https://libretranslate.de/translate',
-                      data={'q': text, 'source': source, 'target': target, 'format': 'text'})
-    return r.json()['translatedText']
+LANGUAGES = ["pt", "es", "fr", "de", "it"]
 
-print(translate("Hello world", target='pt')) 
+def translate(text, lang_index=1, source='auto'):
+    target = LANGUAGES[lang_index]
+
+    r = requests.post(
+        'https://libretranslate.de/translate',
+        data={
+            'q': text,
+            'source': source,
+            'target': target,
+            'format': 'text'
+        }
+    )
+
+    raw = r.text  
+    key = '"translatedText":"'
+    start = raw.find(key) + len(key)
+    end = raw.find('"', start)
+    return raw[start:end]
+
+print(translate("Hello world", lang_index=1))
