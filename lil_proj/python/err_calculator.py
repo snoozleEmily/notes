@@ -235,24 +235,30 @@ def main():
             random_error_roulette(n)
 
         elif choice == '4':
-            # small calculator demo that can still raise ZeroDivisionError / TypeError
+            # demo that can still raise ZeroDivisionError / TypeError
             try:
                 a = input('First operand (e.g. 67 or "biscuits"): ')
                 b = input('Second operand: ')
+
                 # try to interpret as int when possible
                 try:
                     a_eval = int(a)
+
                 except Exception:
                     a_eval = a
+
                 try:
                     b_eval = int(b)
+        
                 except Exception:
-                    b_eval = b
+                    b_eval = b      
                 op = input('Operation (+, -, *, /): ').strip()
                 ops = {'+': add, '-': subtract, '*': multiply, '/': divide}
+                
                 if op not in ops:
                     print('Unknown operation')
                     continue
+
                 fn = ops[op]
                 print('Result:', fn(a_eval, b_eval))
 
