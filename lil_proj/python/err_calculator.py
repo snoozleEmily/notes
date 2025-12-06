@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
+                                                                     (◕‿◕✿)
 A silly "error calculator" 
 
 Run: python error_calculator.py
 
-DISCLAIMER: This program deliberately creates and catches exceptions. It does
-NOT perform any destructive actions (no file deletion, no networking, no
-hardware access). Use for learning and fun  (◕‿◕✿)
+This program intentionally triggers exceptions for fun and education.
+Side effects include laughter, confusion, and mild traceback-related trauma.
 """
 
 import random
