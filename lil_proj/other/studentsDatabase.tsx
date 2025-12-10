@@ -1,4 +1,4 @@
-// A tiny "database" built with React App Expo - since it was discontinued,
+// A tiny little "database" built with React App Expo - since it was discontinued,
 // it ibecame a mere sweet memory, so everything was condensed
 // into one big file full of nostalgia :D
 
