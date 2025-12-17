@@ -14,6 +14,9 @@
 -To Open Ports:
   1. BruteSSH.exe 
   2. FTPCrack.exe 
+  3. relaySMTP.exe
+  4. HTTPWorm.exe
+  5. SQLInject.exe
 
 - Get root access:
     NUKE.exe 
