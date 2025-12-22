@@ -122,7 +122,7 @@ function breaching(ns, target) { // Open ports based on owned files
 
   // Launch the attack script
   if (ns.fileExists("launcher.js", "home")) {
-    ns.run("launcher.js", 1, "early-hack-template.js", target);
+    ns.run("launcher.js", 1, "earlyHackTemp.js", target);
   } else {
     ns.tprint(`[WARNING] No launcher.js found on home. ${target} remains idle.`);
   }
